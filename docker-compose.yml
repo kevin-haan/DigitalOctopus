@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: ./api
+      args:
+        - PORT=${API_PORT}
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    depends_on:
+      - mongo
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NODE_ENV=${ENVIRONMENT}
+      - MONGO_URI=${MONGO_URI}
+
+  client:
+    build:
+      context: ./client
+      args:
+        - PORT=${CLIENT_PORT}
+    volumes:
+      - ./client/src:/usr/src/app/src
+      - /usr/src/app/node_modules
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
+    environment:
+      - NODE_ENV=${ENVIRONMENT}
+    depends_on:
+      - api
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_URI=${MONGO_URI}
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  mongodb_data:
