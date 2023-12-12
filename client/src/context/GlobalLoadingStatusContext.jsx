@@ -1,12 +1,18 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const GlobalLoadingStatusContext = createContext();
 
 export const GlobalLoadingStatusProvider = ({ children }) => {
   const [isGloballyLoading, setIsGloballyLoading] = useState(false);
 
-  const startGloballyLoading = () => setIsGloballyLoading(true);
-  const stopGloballyLoading = () => setIsGloballyLoading(false);
+  const startGloballyLoading = useCallback(
+    () => setIsGloballyLoading(true),
+    []
+  );
+  const stopGloballyLoading = useCallback(
+    () => setIsGloballyLoading(false),
+    []
+  );
 
   return (
     <GlobalLoadingStatusContext.Provider

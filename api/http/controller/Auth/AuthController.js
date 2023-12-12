@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).json({ message: "Ungültige Anmeldedaten" });
+      return res.status(401).json({ message: "Ungültige An2meldedaten" });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
 
     res.json({ ok: true });
   } catch (error) {
-    res.status(500).json({ message: "Serverfehler: " + error.message });
+    res.status(500).json({ message: "Serverfehlerq: " + error.message });
   }
 };
 
@@ -65,14 +65,14 @@ exports.logout = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, first_name, last_name } = req.body;
 
-  hashedPassword = await generateHashedPassword("password");
-  console.log("PASSWORT: " + hashedPassword);
+  hashedPassword = await generateHashedPassword(password);
+
   const user = new User({
-    first_name: "Fips",
-    last_name: "Fipsi",
-    email: "nikolai.stahl@example.org",
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
     password: hashedPassword,
   });
   user.save();

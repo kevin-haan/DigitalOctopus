@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Vollkorn:wght@400;500;600;700;800&display=swap");
+
+.font-sans {
+  font-family: Inter;
+}
+
+.font-serif {
+  font-family: Playfair Display;
+}
+body {
+  @apply font-sans;
+  font-weight: 300;
+}
+
+h1 {
+  @apply font-serif;
+  font-weight: 800;
+}

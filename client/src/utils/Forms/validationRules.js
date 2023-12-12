@@ -11,6 +11,11 @@ class ValidationRules {
     return typeof value !== "string" ? "Muss ein String sein" : "";
   }
 
+  static sameAs(value, otherValue) {
+    console.log(value, otherValue);
+    return value === otherValue ? "" : "Passwörter stimmen nicht überein";
+  }
+
   // Weitere Validierungsmethoden können hier hinzugefügt werden...
 }
 

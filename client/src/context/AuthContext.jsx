@@ -1,11 +1,21 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import AuthService from "../services/Auth/AuthService";
 import UserService from "../services/UserService";
 import { useGlobalLoadingStatus } from "./GlobalLoadingStatusContext";
+import { toast } from "react-toastify";
+import { PiHandWavingLight } from "react-icons/pi";
 
 const AuthContext = createContext({ authData: null });
 
 export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,15 +23,26 @@ export const AuthProvider = ({ children }) => {
     useGlobalLoadingStatus();
 
   useEffect(() => {
-    startGloballyLoading();
-    if (AuthService.checkAuthStatus()) {
-      UserService.getUserData().then((userData) => {
-        persistUser(userData);
-        setIsAuthenticated;
+    const checkAuthentication = async () => {
+      startGloballyLoading();
+      if (await AuthService.checkAuthStatus()) {
+        try {
+          const userData = await UserService.getUserData();
+          persistUser(userData);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error("Fehler beim Abrufen der Benutzerdaten", error);
+          // Optional: Handle Error State
+        } finally {
+          stopGloballyLoading();
+        }
+      } else {
         stopGloballyLoading();
-      });
-    }
-  }, []);
+      }
+    };
+
+    checkAuthentication();
+  }, [startGloballyLoading, stopGloballyLoading]);
 
   const persistUser = (userData) => {
     setAuthData(userData);
@@ -33,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     // Hier könntest du auch andere Aktionen ausführen, wie z.B. das Token in der Axios-Instanz zu setzen
   };
 
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     try {
       if (await AuthService.login(credentials)) {
         const userData = await UserService.getUserData();
@@ -47,20 +68,52 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false); // Stelle sicher, dass der Authentifizierungsstatus zurückgesetzt wird
       return false; // Login fehlgeschlagen
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const register = useCallback(
+    async (data) => {
+      try {
+        const registerResponse = await AuthService.register(data);
+        if (registerResponse.success) {
+          const loginResponse = await login({
+            email: data.email,
+            password: data.password,
+          });
+          return loginResponse; // Gibt das Ergebnis des Login-Versuchs zurück
+        }
+        return false; // Registrierung nicht erfolgreich
+      } catch (error) {
+        console.error("Registrierungsfehler", error.message);
+        return false;
+      }
+    },
+    [login]
+  );
+
+  const logout = useCallback(async () => {
     if (await AuthService.logout()) {
+      toast("You have signed out.", {
+        icon: PiHandWavingLight,
+      });
+      setIsAuthenticated(false);
       forgetUser();
     }
     // Weitere Logout-Aktionen
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      isAuthenticated,
+      authData,
+      persistUser,
+      login,
+      logout,
+      register,
+    }),
+    [isAuthenticated, authData, login, logout, register]
+  );
 
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, authData, persistUser, login, logout }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
