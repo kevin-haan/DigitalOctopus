@@ -16,4 +16,11 @@ jobs:
         username: ${{ secrets.DROPLET_USERNAME }}
         key: ${{ secrets.PRIVATE_SSH_KEY }}
         port: 22
-        script: whoami
+        script: 
+          docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
+             --network ${{ vars.NETWORK_NAME }} \
+             -p 27017:27017 \
+             -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+             -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+             mongo
+
