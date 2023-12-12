@@ -20,8 +20,9 @@ jobs:
           echo "Container Name: ${{ vars.MONGO_CONTAINER_NAME }}"
           echo "Network Name: ${{ vars.NETWORK_NAME }}"
           echo "Mongo Port: ${{ vars.MONGO_PORT }}"
-          echo "Container Name: $MONGO_CONTAINER_NAME"
-          echo "Network Name: $NETWORK_NAME"
-          echo "Mongo Port: $´MONGO_PORT"
-          echo "Mongo Username: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
-          echo "Mongo Password: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
+          docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
+                     --network ${{ vars.NETWORK_NAME }} \
+                     -p 27017:27017 \
+                     -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+                     -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+                     mongo
