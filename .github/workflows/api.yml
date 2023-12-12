@@ -34,12 +34,10 @@ jobs:
           docker stop ${{ vars.API_CONTAINER_NAME }} || true
           docker rm ${{ vars.API_CONTAINER_NAME }} || true
           docker run -d --network ${{ vars.NETWORK_NAME }} \
-                     -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
+                     -p ${{ vars.CLIENT_PORT }}:${{ vars.CLIENT_PORT }} \
                      -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
-                     -e MONGO_URI=${{ secrets.MONGO_URI }} \
                      --restart unless-stopped \
-                     kevinheimer/webshop-api:latest
-
+                     kevinheimer/webshop-client:latest
 
     - name: Create API .env file
       run: |
