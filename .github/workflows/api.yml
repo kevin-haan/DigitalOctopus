@@ -5,7 +5,8 @@ on:
     paths:
       - 'api/**'
     branches: [ main ]
-
+  workflow_dispatch:
+  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
