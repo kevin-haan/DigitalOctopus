@@ -34,9 +34,9 @@ jobs:
           docker run -d --network ${{ vars.NETWORK_NAME }} \
                      -p ${{ vars.CLIENT_PORT }}:${{ vars.CLIENT_PORT }} \
                      -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
-                     --restart unless-stopped \
                      --name ${{ vars.CLIENT_CONTAINER_NAME }} \
-                     kevinheimer/webshop-client:latest \
+                     --restart unless-stopped \
+                     kevinheimer/webshop-client:latest
 
     - name: Create Client .env file
       run: |
