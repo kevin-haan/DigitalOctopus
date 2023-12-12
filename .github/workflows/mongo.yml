@@ -16,10 +16,9 @@ jobs:
         username: ${{ secrets.DROPLET_USERNAME }}
         key: ${{ secrets.PRIVATE_SSH_KEY }}
         port: 22
-        script: 
-          - echo "Container Name: ${{ vars.MONGO_CONTAINER_NAME }}"
-          - echo "Network Name: ${{ vars.NETWORK_NAME }}"
-          - echo "Mongo Port: ${{ vars.MONGO_PORT }}"
-          - echo "Mongo Username: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
-          - echo "Mongo Password: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
-
+        script: |
+          echo "Container Name: ${{ env.MONGO_CONTAINER_NAME }}"
+          echo "Network Name: ${{ env.NETWORK_NAME }}"
+          echo "Mongo Port: ${{ env.MONGO_PORT }}"
+          echo "Mongo Username: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
+          echo "Mongo Password: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
