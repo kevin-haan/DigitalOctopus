@@ -17,10 +17,9 @@ jobs:
         key: ${{ secrets.PRIVATE_SSH_KEY }}
         port: 22
         script: 
-          docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
-             --network ${{ vars.NETWORK_NAME }} \
-             -p ${{ vars.MONGO_PORT }}:${{ vars.MONGO_PORT }} \
-             -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
-             -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
-             mongo
+          - echo "Container Name: ${{ vars.MONGO_CONTAINER_NAME }}"
+          - echo "Network Name: ${{ vars.NETWORK_NAME }}"
+          - echo "Mongo Port: ${{ vars.MONGO_PORT }}"
+          - echo "Mongo Username: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
+          - echo "Mongo Password: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
 
