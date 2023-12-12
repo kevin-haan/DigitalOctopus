@@ -5,6 +5,7 @@ on:
     paths:
       - 'client/**'
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
