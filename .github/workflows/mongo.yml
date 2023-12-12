@@ -1,0 +1,24 @@
+name: Create MongoDB Container
+
+on:
+  workflow_dispatch: # Diese Aktion wird nur manuell ausgelöst
+
+jobs:
+  create-mongo-container:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Create and Start MongoDB Container
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_USERNAME }}
+        password: ${{ secrets.DROPLET_PASSWORD }}
+        script: |
+          docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
+                     --network ${{ vars.NETWORK_NAME }} \
+                     -p 27017:27017 \
+                     -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+                     -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+                     mongo
