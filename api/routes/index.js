@@ -12,7 +12,7 @@ router.get('/', appController.index)
 
 // define the about route
 router.get('/about', (req, res) => {
-    res.send('About birds')
+    res.send('About birdss')
 })
 
 module.exports = router
