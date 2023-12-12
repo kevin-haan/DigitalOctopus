@@ -1,0 +1,46 @@
+name: API Build and Deploy
+
+on:
+  push:
+    paths:
+      - 'api/**'
+    branches: [ main ]
+  workflow_dispatch:
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Log in to Docker Registry
+      run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+    
+    - name: Build and Push API Docker Image
+      run: |
+        docker build -t kevinheimer/webshop-api:latest ./api
+        docker push kevinheimer/webshop-api:latest
+
+    - name: Update API on Droplet
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_USERNAME }}
+        key: ${{ secrets.PRIVATE_SSH_KEY }}
+        script: |
+          docker pull kevinheimer/webshop-api:latest
+          docker stop ${{ vars.API_CONTAINER_NAME }} || true
+          docker rm ${{ vars.API_CONTAINER_NAME }} || true
+          docker run -d --network ${{ vars.NETWORK_NAME }} \
+                     -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
+                     -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
+                     -e MONGO_URI=${{ secrets.MONGO_URI }} \
+                     --restart unless-stopped \
+                     kevinheimer/webshop-api:latest
+
+    - name: Create API .env file
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env

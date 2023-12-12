@@ -1,0 +1,42 @@
+name: Client Build and Deploy
+
+on:
+  push:
+    paths:
+      - 'client/**'
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    
+    - name: Build and Push Client Docker Image
+      run: |
+        docker build -t kevinheimer/webshop-client:latest ./client
+        echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+        docker push kevinheimer/webshop-client:latest
+
+    - name: Update Client on Droplet
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_USERNAME }}
+        key: ${{ secrets.PRIVATE_SSH_KEY }}
+        script: |
+          docker pull kevinheimer/webshop-client:latest
+          docker stop ${{ vars.CLIENT_CONTAINER_NAME }} || true
+          docker rm ${{ vars.CLIENT_CONTAINER_NAME }} || true
+          docker run -d --network ${{ vars.NETWORK_NAME }} \
+                     -p ${{ vars.CLIENT_PORT }}:${{ vars.CLIENT_PORT }} \
+                     -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
+                     --restart unless-stopped \
+                     kevinheimer/webshop-client:latest
+
+    - name: Create Client .env file
+      run: |
+        echo "REACT_APP_API_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }}" > client/.env
