@@ -37,6 +37,7 @@ jobs:
                      -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
                      -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
                      -e MONGO_URI=${{ secrets.MONGO_URI }} \
+                     --name ${{ vars.API_CONTAINER_NAME }}
                      --restart unless-stopped \
                      kevinheimer/webshop-api:latest
 
