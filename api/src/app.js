@@ -21,6 +21,8 @@ var allowedOrigins = [
   "localhost:5001",
   "localhost:27017",
 ];
+
+//test
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
