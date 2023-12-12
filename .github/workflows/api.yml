@@ -21,7 +21,6 @@ jobs:
     - name: Build and Push API Docker Image
       run: |
         docker build -t kevinheimer/webshop-api:latest ./api
-        echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
         docker push kevinheimer/webshop-api:latest
 
     - name: Update API on Droplet
@@ -34,13 +33,13 @@ jobs:
           docker pull kevinheimer/webshop-api:latest
           docker stop ${{ vars.API_CONTAINER_NAME }} || true
           docker rm ${{ vars.API_CONTAINER_NAME }} || true
-          docker run -d --${{ vars.NETWORK_NAME }} \
+          docker run -d --network ${{ vars.NETWORK_NAME }} \
                      -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
-                     -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
                      -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
                      -e MONGO_URI=${{ secrets.MONGO_URI }} \
                      --restart unless-stopped \
                      kevinheimer/webshop-api:latest
+
 
     - name: Create API .env file
       run: |
