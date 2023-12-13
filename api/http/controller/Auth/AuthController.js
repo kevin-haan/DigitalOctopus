@@ -7,6 +7,8 @@ require("dotenv").config();
 const authCookieName = "authToken";
 
 exports.index = async (req, res) => {
+  console.log("Client.origin: ", process.env.CLIENT_ORIGIN);
+
   try {
     const token = req.cookies[authCookieName]; // oder req.headers.authorization
     if (!token) {

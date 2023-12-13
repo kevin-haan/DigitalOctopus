@@ -12,7 +12,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("combined"));
 
-console.log(process.env.CLIENT_ORIGIN);
+console.log("Client.origin: ", process.env.CLIENT_ORIGIN);
 const allowedOrigins = [process.env.CLIENT_ORIGIN]; //test
 const corsOptions = {
   origin: function (origin, callback) {
