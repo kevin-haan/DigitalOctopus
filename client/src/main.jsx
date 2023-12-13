@@ -13,6 +13,8 @@ import App from "./App";
 
 // AXIOS CONFIG
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
+console.info("API URL: ", import.meta.env.VITE_API_URL);
 axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
