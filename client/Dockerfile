@@ -9,6 +9,8 @@ RUN npm install
 
 COPY . .
 
+COPY .env .env
+
 ARG PORT=5000
 ENV PORT $PORT
 EXPOSE $PORT
