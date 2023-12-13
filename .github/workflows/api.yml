@@ -37,7 +37,7 @@ jobs:
                        -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
                        -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
                        -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-                       -e CLIENT_ORIGIN=${{ secrets.DROPLET_IP }} \
+                       -e CLIENT_ORIGIN=http://${{ secrets.DROPLET_IP }} \
                        -e NODE_ENV=${{ secrets.NODE_ENV }} \
                        -e MONGO_URI=${{ secrets.MONGO_URI }} \
                        --name ${{ vars.API_CONTAINER_NAME }} \
