@@ -5,24 +5,15 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
+require("dotenv").config();
 
 // Middleware
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("combined"));
 
-var allowedOrigins = [
-  "http://localhost",
-  "http://localhost:80",
-  "localhost:80",
-  "localhost",
-  "http://localhost:5001",
-  "http://localhost:27017",
-  "localhost:5001",
-  "localhost:27017",
-];
-
-//test
+console.log(process.env.CLIENT_ORIGIN);
+const allowedOrigins = [process.env.CLIENT_ORIGIN]; //test
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {

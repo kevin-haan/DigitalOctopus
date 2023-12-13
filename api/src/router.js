@@ -2,7 +2,7 @@ const express = require("express");
 const userRoutes = require("../routes/userRoutes");
 const authRoutes = require("../routes/Auth/authRoutes");
 const rateLimit = require("express-rate-limit");
-
+const csurf = require("csurf");
 const router = express.Router();
 
 const authLimiter = rateLimit({
@@ -13,6 +13,6 @@ const authLimiter = rateLimit({
 const csrfProtection = csurf({ cookie: true });
 
 router.use("/user", userRoutes);
-router.use("/auth", authLimiter, csrfProtection, authRoutes);
+router.use("/auth", authLimiter, authRoutes);
 
 module.exports = router;
