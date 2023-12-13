@@ -79,12 +79,16 @@ export const AuthProvider = ({ children }) => {
             email: data.email,
             password: data.password,
           });
-          return loginResponse; // Gibt das Ergebnis des Login-Versuchs zurück
+          return { success: true, data: loginResponse };
+        } else {
+          return { success: false, errors: registerResponse.errors };
         }
-        return false; // Registrierung nicht erfolgreich
       } catch (error) {
         console.error("Registrierungsfehler", error.message);
-        return false;
+        return {
+          success: false,
+          errors: { general: "Ein unbekannter Fehler ist aufgetreten." },
+        };
       }
     },
     [login]

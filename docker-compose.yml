@@ -23,7 +23,7 @@ services:
       args:
         - PORT=${CLIENT_PORT}
     volumes:
-      - ./client/src:/usr/src/app/src
+      - ./client:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - "${CLIENT_PORT}:${CLIENT_PORT}"

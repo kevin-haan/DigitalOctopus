@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const RegisterForm = () => {
   const registerForm = new Form({
-    first_name: ["", ["required"]],
+    first_name: ["", ["required", "minLength:3"]],
     last_name: ["", ["required"]],
     email: ["", ["required", "minLength:3"]],
     password: ["", ["required", "minLength:8"]],
@@ -28,22 +28,21 @@ const RegisterForm = () => {
   };
 
   const onError = (error) => {
-    toast.error("Anmeldefehler!");
+    toast.error(error);
   };
 
   const onFormSubmit = async (inputs) => {
     if (isAuthenticated) {
       toast("Bereits angemeldet.");
     } else {
-      try {
-        const response = await register(inputs);
-        if (response) {
-          onSuccess();
-        } else {
-          onError();
-        }
-      } catch (error) {
-        onError(error);
+      const response = await register(inputs);
+      if (response && response.success) {
+        onSuccess();
+      } else if (response && response.errors) {
+        // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
+        Object.keys(response.errors).forEach((key) => {
+          toast.error(response.errors[key]);
+        });
       }
     }
   };

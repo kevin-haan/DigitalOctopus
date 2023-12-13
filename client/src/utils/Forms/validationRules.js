@@ -12,7 +12,6 @@ class ValidationRules {
   }
 
   static sameAs(value, otherValue) {
-    console.log(value, otherValue);
     return value === otherValue ? "" : "Passwörter stimmen nicht überein";
   }
 

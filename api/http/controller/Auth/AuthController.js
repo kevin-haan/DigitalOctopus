@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
       // maxAge: ...     // Setzt eine Ablaufzeit für das Cookie
     });
 
-    res.json({ ok: true });
+    res.status(200).json({ ok: true });
   } catch (error) {
     res.status(500).json({ message: "Serverfehlerq: " + error.message });
   }
@@ -67,15 +67,28 @@ exports.logout = async (req, res) => {
 exports.register = async (req, res) => {
   const { email, password, first_name, last_name } = req.body;
 
-  hashedPassword = await generateHashedPassword(password);
+  // catch validation error
+  try {
+    const existingUser = await User.findOne({ email: email });
+    if (existingUser) {
+      return res.status(400).json({
+        errors: { email: "This email is already in use or invalid." },
+      });
+    }
 
-  const user = new User({
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    password: hashedPassword,
-  });
-  user.save();
+    hashedPassword = await generateHashedPassword(password);
+    const user = new User({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      password: hashedPassword,
+    });
+
+    await user.save();
+    res.status(200).json({ ok: true });
+  } catch (error) {
+    return res.status(500).json({ message: "Serverfehler: " + error.message });
+  }
 };
 async function generateHashedPassword(plainPassword) {
   try {

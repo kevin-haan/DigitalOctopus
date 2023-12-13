@@ -21,6 +21,13 @@ export const useForm = (form, action, successAction, errorAction) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // validate all fields with form.validateField() again
+    Object.keys(inputs).forEach((key) => {
+      setErrors((errors) => ({
+        ...errors,
+        [key]: form.validateField(key, inputs[key], inputs),
+      }));
+    });
     if (Object.values(errors).every((error) => !error)) {
       startGloballyLoading();
       try {

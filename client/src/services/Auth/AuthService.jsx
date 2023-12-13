@@ -23,15 +23,20 @@ const login = async (credentials) => {
 
 const register = async (registerData) => {
   try {
-    console.log(registerData);
     const response = await axios.post("/auth/register", registerData);
-    console.log(response);
-    return response.status === 200;
+    return { success: response.status === 200 };
   } catch (error) {
-    console.error("Login-Fehler", error.message);
-    return false;
+    if (error.response) {
+      return { success: false, errors: error.response.data.errors };
+    } else {
+      return {
+        success: false,
+        errors: { general: "Ein unbekannter Fehler ist aufgetreten." },
+      };
+    }
   }
 };
+
 const logout = async () => {
   try {
     const response = await axios.post("/auth/logout");
