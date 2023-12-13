@@ -9,8 +9,6 @@ RUN npm install
 
 COPY . .
 
-COPY .env .env
-
 # Setze den Port als Umgebungsvariable
 ARG PORT=5000
 ENV PORT $PORT
