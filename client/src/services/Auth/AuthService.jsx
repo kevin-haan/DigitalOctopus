@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-
+import CsrfService from "../CsrfService";
 const checkAuthStatus = async () => {
   try {
     const response = await axios.get("auth");
@@ -13,7 +13,12 @@ const checkAuthStatus = async () => {
 
 const login = async (credentials) => {
   try {
-    const response = await axios.post("/auth/login", credentials, {});
+    const csrfToken = await CsrfService.fetchCsrfToken();
+    const response = await axios.post("/auth/login", credentials, {
+      headers: {
+        "CSRF-Token": csrfToken,
+      },
+    });
     return response.status === 200;
   } catch (error) {
     console.error("Login-Fehler", error.message);
@@ -23,7 +28,12 @@ const login = async (credentials) => {
 
 const register = async (registerData) => {
   try {
-    const response = await axios.post("/auth/register", registerData);
+    const csrfToken = await CsrfService.fetchCsrfToken();
+    const response = await axios.post("/auth/register", registerData, {
+      headers: {
+        "CSRF-Token": csrfToken,
+      },
+    });
     return { success: response.status === 200 };
   } catch (error) {
     if (error.response) {
@@ -39,7 +49,16 @@ const register = async (registerData) => {
 
 const logout = async () => {
   try {
-    const response = await axios.post("/auth/logout");
+    const csrfToken = await CsrfService.fetchCsrfToken();
+    const response = await axios.post(
+      "/auth/logout",
+      {},
+      {
+        headers: {
+          "CSRF-Token": csrfToken,
+        },
+      }
+    );
     return response.status === 200;
   } catch (error) {
     console.error("Logout-Fehler", error.message);

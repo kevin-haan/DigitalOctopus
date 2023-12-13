@@ -98,6 +98,7 @@ const LoginForm = () => {
           </div>
         )}
       </div>
+
       <button
         type="submit"
         className="group mt-5 font-serif font-bold text-gray-800 py-2 px-4 rounded text-center"
