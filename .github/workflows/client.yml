@@ -38,7 +38,6 @@ jobs:
             docker run -d --network ${{ vars.NETWORK_NAME }} \
                        -p ${{ vars.CLIENT_PORT }}:${{ vars.CLIENT_PORT }} \
                        -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
-                       -e VITE_API_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }}" \
                        --name ${{ vars.CLIENT_CONTAINER_NAME }} \
                        --restart unless-stopped \
                        kevinheimer/webshop-client:latest

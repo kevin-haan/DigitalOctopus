@@ -15,6 +15,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
       
+    - name: Create API .env file
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > ./api/.env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./api/.env
+
     - name: Log in to Docker Registry
       run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
     
@@ -40,8 +45,3 @@ jobs:
                      --name ${{ vars.API_CONTAINER_NAME }} \
                      --restart unless-stopped \
                      kevinheimer/webshop-api:latest
-
-    - name: Create API .env file
-      run: |
-        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
