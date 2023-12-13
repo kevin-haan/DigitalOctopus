@@ -1,2 +1,5 @@
+client/.env
 api/.env
 .env
+client/.env
+client/package-lock.json

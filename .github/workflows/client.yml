@@ -40,4 +40,4 @@ jobs:
 
     - name: Create Client .env file
       run: |
-        echo "REACT_APP_API_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }}" > client/.env
+        echo "VITE_API_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }}" > client/.env

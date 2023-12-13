@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 
 // AXIOS CONFIG
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
