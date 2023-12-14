@@ -32,6 +32,8 @@ jobs:
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
+            docker network create ${{ vars.NETWORK_NAME }} || true
+
             docker pull kevinheimer/webshop-client:latest
             docker stop ${{ vars.CLIENT_CONTAINER_NAME }} || true
             docker rm ${{ vars.CLIENT_CONTAINER_NAME }} || true

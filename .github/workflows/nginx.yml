@@ -33,4 +33,5 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
             cd ./nginx
+            docker network create ${{ vars.NETWORK_NAME }} || true
             docker-compose up --build -d
