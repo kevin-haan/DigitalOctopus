@@ -36,7 +36,7 @@ jobs:
             docker stop ${{ vars.CLIENT_CONTAINER_NAME }} || true
             docker rm ${{ vars.CLIENT_CONTAINER_NAME }} || true
             docker run -d --network ${{ vars.NETWORK_NAME }} \
-                       -p ${{ vars.CLIENT_PORT }}:${{ vars.CLIENT_PORT }} \
+                       -p ${{ vars.CLIENT_PORT }} \
                        -e NODE_ENV=${{ secrets.ENVIRONMENT }} \
                        --name ${{ vars.CLIENT_CONTAINER_NAME }} \
                        --restart unless-stopped \

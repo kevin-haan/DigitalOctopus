@@ -8,21 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Create and Start MongoDB Container
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DROPLET_IP }}
-        username: ${{ secrets.DROPLET_USERNAME }}
-        key: ${{ secrets.PRIVATE_SSH_KEY }}
-        port: 22
-        script: |
-          echo "Container Name: ${{ vars.MONGO_CONTAINER_NAME }}"
-          echo "Network Name: ${{ vars.NETWORK_NAME }}"
-          echo "Mongo Port: ${{ vars.MONGO_PORT }}"
-          docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
-                     --network ${{ vars.NETWORK_NAME }} \
-                     -p 27017:27017 \
-                     -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
-                     -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
-                     mongo
+      - name: Create and Start MongoDB Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Container Name: ${{ vars.MONGO_CONTAINER_NAME }}"
+            echo "Network Name: ${{ vars.NETWORK_NAME }}"
+            echo "Mongo Port: ${{ vars.MONGO_PORT }}"
+            docker run -d --name ${{ vars.MONGO_CONTAINER_NAME }} \
+                       --network ${{ vars.NETWORK_NAME }} \
+                       -p 27017 \
+                       -e MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+                       -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+                       mongo

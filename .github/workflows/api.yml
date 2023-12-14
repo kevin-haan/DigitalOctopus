@@ -34,7 +34,7 @@ jobs:
             docker stop ${{ vars.API_CONTAINER_NAME }} || true
             docker rm ${{ vars.API_CONTAINER_NAME }} || true
             docker run -d --network ${{ vars.NETWORK_NAME }} \
-                       -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
+                       -p ${{ vars.API_PORT }} \
                        -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
                        -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
                        -e CLIENT_ORIGIN=http://${{ secrets.DROPLET_IP }} \
