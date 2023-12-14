@@ -21,8 +21,8 @@ jobs:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.PRIVATE_SSH_KEY }}
-          source: "*"
-          target: "./nginx"
+          source: "nginx/*" # Überträgt nur die Inhalte des nginx-Ordners
+          target: "/home/${{ secrets.DROPLET_USERNAME }}/nginx" # Zielverzeichnis auf dem Droplet
 
       - name: SSH and Deploy NGINX to Droplet
         uses: appleboy/ssh-action@master
@@ -31,6 +31,6 @@ jobs:
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
-            cd ./nginx
-            docker network ls | grep ${{ vars.NETWORK_NAME }} || docker network create ${{ vars.NETWORK_NAME }}
+            cd /home/${{ secrets.DROPLET_USERNAME }}/nginx
+            sdocker network ls | grep ${{ vars.NETWORK_NAME }} || docker network create ${{ vars.NETWORK_NAME }}
             docker-compose up --build -d
