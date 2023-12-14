@@ -1,7 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useGlobalLoadingStatus } from "../context/GlobalLoadingStatusContext";
 import Dropdown from "./common/Dropdown";
-import logo from "../assets/images/logo/plants_logo_white.svg";
+import logo from "../assets/images/logo/digitaloctopus_logo_white.svg";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -36,12 +36,13 @@ function Header() {
   };
 
   return (
-    <div className="header shadow-xl mb-5 p-3">
-      <div className="container mx-auto px-4 flex">
-        <div className="mr-auto">
+    <div className="absolute w-full h-40 flex">
+      <div className="container mx-auto my-auto justify-between items-center flex">
+        <span className="flex-1"></span>
+        <div className="flex-1 flex justify-center my-auto">
           <img src={logo} className="h-12 w-auto"></img>
         </div>
-        <span className="ml-auto my-auto">
+        <span className="flex-1 flex justify-end my-auto">
           {isGloballyLoading && renderLoadingIndicator()}
           {!isGloballyLoading && renderUserInfo()}
         </span>

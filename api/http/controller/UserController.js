@@ -3,12 +3,13 @@ const { createUserResponse } = require("../responses/Auth/userResponse");
 const jwt = require("jsonwebtoken");
 
 exports.index = async (req, res) => {
-  try {
-    const token = req.cookies.authToken;
-    if (!token) {
-      return res.status(401).json({ message: "Nicht authentifiziert" });
-    }
+  const token = req.cookies.authToken;
 
+  if (!token) {
+    return res.status(401).json({ message: "Nicht authentifiziert" });
+  }
+
+  try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
 

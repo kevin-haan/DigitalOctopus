@@ -3,6 +3,7 @@ const userRoutes = require("../routes/userRoutes");
 const authRoutes = require("../routes/Auth/authRoutes");
 const csrfRoutes = require("../routes/csrfRoutes");
 const rateLimit = require("express-rate-limit");
+const { default: validate } = require("../http/middleware/validate");
 const router = express.Router();
 
 const authLimiter = rateLimit({

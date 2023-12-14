@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../config/axiosConfig";
 
 const fetchCsrfToken = async () => {
   const response = await axios.get("csrf");

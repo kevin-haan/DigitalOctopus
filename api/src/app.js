@@ -29,6 +29,7 @@ app.use(express.json());
 
 // Routen
 const router = require("./router");
+const validate = require("../http/middleware/validate");
 // define the home page route
 app.use(router);
 
@@ -37,5 +38,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
+router.use(validate);
 
 module.exports = app; // Exportiere die Express-App

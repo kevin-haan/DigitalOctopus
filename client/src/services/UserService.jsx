@@ -1,5 +1,4 @@
-/* eslint-disable no-useless-catch */
-import axios from "axios";
+import axios from "../config/axiosConfig";
 
 const getUserData = async () => {
   try {

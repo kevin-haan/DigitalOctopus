@@ -37,3 +37,8 @@ body {
   @apply rounded;
   @apply opacity-50;
 }
+
+.glowing-outline {
+  outline: 2px solid #fff; /* Basis-Outline */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Glüh-Effekt */
+}

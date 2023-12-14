@@ -25,7 +25,9 @@ const LoginForm = () => {
   };
 
   const onError = (error) => {
-    toast.error("Anmeldefehler!");
+    error.map((error) => {
+      toast.error(error);
+    });
   };
 
   const onFormSubmit = async (inputs) => {
@@ -34,12 +36,18 @@ const LoginForm = () => {
     } else {
       try {
         const response = await login(inputs);
-        if (response) {
+        if (response && response.success) {
           onSuccess();
-        } else {
-          onError();
+        }
+        if (response && response.errors) {
+          console.log(response.errors);
+          // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
+          Object.keys(response.errors).forEach((key) => {
+            toast.error(response.errors[key].msg);
+          });
         }
       } catch (error) {
+        console.log(error);
         onError(error);
       }
     }
@@ -58,7 +66,7 @@ const LoginForm = () => {
         <label>
           <div className="text-sm px-3 mb-3 font-bold">Email</div>
           <input
-            type="email"
+            type="text"
             name="email"
             value={inputs.email}
             onChange={handleInputChange}

@@ -27,25 +27,15 @@ const RegisterForm = () => {
     });
   };
 
-  const onError = (error) => {
-    toast.error(error);
+  const onError = (errors) => {
+    console.log("form", errors);
+    Object.entries(errors).forEach(([key, msg]) => {
+      console.log(msg);
+      toast.error(msg);
+    });
   };
 
-  const onFormSubmit = async (inputs) => {
-    if (isAuthenticated) {
-      toast("Bereits angemeldet.");
-    } else {
-      const response = await register(inputs);
-      if (response && response.success) {
-        onSuccess();
-      } else if (response && response.errors) {
-        // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
-        Object.keys(response.errors).forEach((key) => {
-          toast.error(response.errors[key]);
-        });
-      }
-    }
-  };
+  const onFormSubmit = register;
 
   const { inputs, errors, handleInputChange, handleSubmit } = useForm(
     registerForm,

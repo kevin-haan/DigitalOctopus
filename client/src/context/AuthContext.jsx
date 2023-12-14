@@ -11,6 +11,7 @@ import UserService from "../services/UserService";
 import { useGlobalLoadingStatus } from "./GlobalLoadingStatusContext";
 import { toast } from "react-toastify";
 import { PiHandWavingLight } from "react-icons/pi";
+import { handleErrorResponse } from "../utils/serviceUtils";
 
 const AuthContext = createContext({ authData: null });
 
@@ -25,18 +26,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthentication = async () => {
       startGloballyLoading();
-      if (await AuthService.checkAuthStatus()) {
-        try {
+      try {
+        const isAuthenticated = await AuthService.checkAuthStatus();
+        if (isAuthenticated) {
           const userData = await UserService.getUserData();
           persistUser(userData);
           setIsAuthenticated(true);
-        } catch (error) {
-          console.error("Fehler beim Abrufen der Benutzerdaten", error);
-          // Optional: Handle Error State
-        } finally {
-          stopGloballyLoading();
         }
-      } else {
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Benutzerdaten", error);
+        // Optional: Handle Error State
+      } finally {
         stopGloballyLoading();
       }
     };
@@ -44,31 +44,36 @@ export const AuthProvider = ({ children }) => {
     checkAuthentication();
   }, [startGloballyLoading, stopGloballyLoading]);
 
-  const persistUser = (userData) => {
+  const persistUser = useCallback((userData) => {
     setAuthData(userData);
     // Hier könntest du auch andere Aktionen ausführen, wie z.B. das Token in der Axios-Instanz zu setzen
-  };
+  }, []);
 
-  const forgetUser = () => {
+  const forgetUser = useCallback(() => {
     setAuthData(null);
     // Hier könntest du auch andere Aktionen ausführen, wie z.B. das Token in der Axios-Instanz zu setzen
-  };
-
-  const login = useCallback(async (credentials) => {
-    try {
-      if (await AuthService.login(credentials)) {
-        const userData = await UserService.getUserData();
-        persistUser(userData);
-        setIsAuthenticated(true); // Aktualisiere den Authentifizierungsstatus
-        return true; // Login erfolgreich
-      }
-      return false; // Login nicht erfolgreich, aber kein Fehler
-    } catch (error) {
-      console.error("Login-Fehler", error.message);
-      setIsAuthenticated(false); // Stelle sicher, dass der Authentifizierungsstatus zurückgesetzt wird
-      return false; // Login fehlgeschlagen
-    }
   }, []);
+
+  const login = useCallback(
+    async (data) => {
+      try {
+        const loginResponse = await AuthService.login(data);
+
+        if (loginResponse.success) {
+          const userData = await UserService.getUserData();
+          persistUser(userData);
+          setIsAuthenticated(true);
+          return true;
+        } else {
+          setIsAuthenticated(false);
+          return { success: false, errors: loginResponse.errors };
+        }
+      } catch (error) {
+        return handleErrorResponse(error);
+      }
+    },
+    [persistUser]
+  );
 
   const register = useCallback(
     async (data) => {
@@ -84,18 +89,15 @@ export const AuthProvider = ({ children }) => {
           return { success: false, errors: registerResponse.errors };
         }
       } catch (error) {
-        console.error("Registrierungsfehler", error.message);
-        return {
-          success: false,
-          errors: { general: "Ein unbekannter Fehler ist aufgetreten." },
-        };
+        return handleErrorResponse(error);
       }
     },
     [login]
   );
 
   const logout = useCallback(async () => {
-    if (await AuthService.logout()) {
+    const logoutResponse = await AuthService.logout();
+    if (logoutResponse.success) {
       toast("You have signed out.", {
         icon: PiHandWavingLight,
       });
@@ -103,7 +105,7 @@ export const AuthProvider = ({ children }) => {
       forgetUser();
     }
     // Weitere Logout-Aktionen
-  }, []);
+  }, [forgetUser]);
 
   const contextValue = useMemo(
     () => ({
@@ -114,7 +116,7 @@ export const AuthProvider = ({ children }) => {
       logout,
       register,
     }),
-    [isAuthenticated, authData, login, logout, register]
+    [isAuthenticated, authData, login, logout, persistUser, register]
   );
 
   return (
