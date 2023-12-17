@@ -15,4 +15,4 @@ ARG PORT=80
 ENV PORT $PORT
 EXPOSE $PORT
 
-CMD ["npm", "run", "build"]
+CMD ["npm", "run", "dev"]
