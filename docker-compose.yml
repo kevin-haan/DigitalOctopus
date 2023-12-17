@@ -51,7 +51,7 @@ services:
       - ${NETWORK_NAME}
 
 networks:
-  digitaloctopus:  
+  ${NETWORK_NAME}:  
 
 volumes:
   mongodb_data:
