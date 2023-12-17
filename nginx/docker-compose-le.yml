@@ -1,0 +1,11 @@
+services:
+  letsencrypt:
+    container_name: "certbot-service"
+    image: certbot/certbot:latest
+    command: sh -c "certbot certonly --test-cert --expand --webroot -w /tmp/acme_challenge -d test.leangaurav.com --text --agree-tos --email kevin.haan@posteo.de --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=http"
+    entrypoint: ""
+    volumes:
+      - "/etc/letsencrypt:/etc/letsencrypt"
+      - "/tmp/acme_challenge:/tmp/acme_challenge"
+    environment:
+      - TERM=xterm

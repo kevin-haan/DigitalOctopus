@@ -31,7 +31,6 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
             cd nginx
-            docker network ls | grep ${{ vars.NETWORK_NAME }} || true
             export NETWORK_NAME=${{ vars.NETWORK_NAME }}
             export DROPLET_DOMAIN=${{ secrets.DROPLET_DOMAIN }}
-            docker-compose up --build -d
+            docker-compose up --build -d nginx
