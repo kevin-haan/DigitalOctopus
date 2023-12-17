@@ -1,0 +1,19 @@
+name: Deploy NGINX to Droplet
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/certbot.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH and Deploy NGINX to Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          script: certbot certonly --standalone --test-cert --verbose --email kevin.haan@posteo.de --agree-tos --no-eff-email -d ${{ secrets.DROPLET_DOMAIN }} -d www.${{ secrets.DROPLET_DOMAIN }}
