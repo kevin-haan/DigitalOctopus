@@ -34,4 +34,4 @@ jobs:
             docker network ls | grep ${{ vars.NETWORK_NAME }} || true
             export NETWORK_NAME=${{ vars.NETWORK_NAME }}
             export DROPLET_DOMAIN=${{ secrets.DROPLET_DOMAIN }}
-            docker-compose up --build -d
+            docker compose run --rm
