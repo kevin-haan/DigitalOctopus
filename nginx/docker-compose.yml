@@ -22,5 +22,5 @@ services:
     # Füge weitere Optionen hinzu, falls benötigt
 
 networks:
-  digitaloctopus_digitaloctopus:
+  ${NETWORK_NAME}:
     external: true
