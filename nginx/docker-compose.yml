@@ -1,10 +1,10 @@
 services:
-  # certbot:
-  #   image: certbot/certbot
-  #   volumes:
-  #     - ./certs:/etc/letsencrypt
-  #     - ./certbot-data:/data/letsencrypt
-  #   command: certonly --standalone --email kevin.haan@posteo.de --agree-tos --no-eff-email -d ${DROPLET_DOMAIN} -d www.${DROPLET_DOMAIN}
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./certbot-data:/data/letsencrypt
+    command: certonly --standalone --email kevin.haan@posteo.de --agree-tos --no-eff-email -d ${DROPLET_DOMAIN} -d www.${DROPLET_DOMAIN}
 
   nginx:
     image: nginx:latest
@@ -16,8 +16,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    # depends_on:
-    #   - certbot
+    depends_on:
+      - certbot
 
 networks:
   network:
