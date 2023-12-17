@@ -34,3 +34,4 @@ jobs:
             export NETWORK_NAME=${{ vars.NETWORK_NAME }}
             export DROPLET_DOMAIN=${{ secrets.DROPLET_DOMAIN }}
             docker-compose up --build -d nginx
+            docker-compose -f docker-compose-le.yml up --build
