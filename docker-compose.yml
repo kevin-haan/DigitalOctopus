@@ -16,6 +16,8 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NODE_ENV=${ENVIRONMENT}
       - MONGO_URI=${MONGO_URI}
+    networks:
+      - ${NETWORK_NAME}
 
   client:
     build:
@@ -31,6 +33,8 @@ services:
       - NODE_ENV=${ENVIRONMENT}
     depends_on:
       - api
+    networks:
+      - ${NETWORK_NAME}
 
   mongo:
     image: mongo
@@ -43,6 +47,11 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_URI=${MONGO_URI}
     command: mongod --quiet --logpath /dev/null
+    networks:
+      - ${NETWORK_NAME}
+
+networks:
+  digitaloctopus:  
 
 volumes:
   mongodb_data:
