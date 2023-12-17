@@ -5,7 +5,7 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./certs:/etc/letsencrypt
     networks:
-      - ${NETWORK_NAME}
+      - network
     ports:
       - "80:80"
       - "443:443"
@@ -20,5 +20,6 @@ services:
     command: certonly --standalone --email kevin.haan@posteo.de --agree-tos --no-eff-email -d ${DROPLET_DOMAIN} -d www.${DROPLET_DOMAIN}
 
 networks:
-  ${NETWORK_NAME}:
+  network:
+    name: ${NETWORK_NAME}
     external: true

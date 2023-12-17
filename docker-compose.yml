@@ -17,7 +17,7 @@ services:
       - NODE_ENV=${ENVIRONMENT}
       - MONGO_URI=${MONGO_URI}
     networks:
-      - ${NETWORK_NAME}
+      - network
 
   client:
     build:
@@ -34,7 +34,7 @@ services:
     depends_on:
       - api
     networks:
-      - ${NETWORK_NAME}
+      - network
 
   mongo:
     image: mongo
@@ -48,10 +48,11 @@ services:
       - MONGO_URI=${MONGO_URI}
     command: mongod --quiet --logpath /dev/null
     networks:
-      - ${NETWORK_NAME}
+      - network
 
 networks:
-  ${NETWORK_NAME}:  
+  network:
+    name: ${NETWORK_NAME}
 
 volumes:
   mongodb_data:
