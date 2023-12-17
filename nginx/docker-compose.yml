@@ -9,8 +9,8 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      # - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      # - ./certs:/etc/letsencrypt
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./certs:/etc/letsencrypt
     networks:
       - network
     ports:
