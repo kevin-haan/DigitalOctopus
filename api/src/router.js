@@ -8,7 +8,7 @@ const router = express.Router();
 
 const authLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 15 Minuten
-  max: 120, // Limitiere jede IP auf 100 Anfragen pro Fenster
+  max: 120, // Limitiessdre jede IP auf 100 Anfragen pro Fensterasd
 });
 
 router.use("/user", userRoutes);

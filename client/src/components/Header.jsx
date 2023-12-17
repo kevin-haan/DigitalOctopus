@@ -20,13 +20,13 @@ function Header() {
         <div>
           <Link
             to="/login"
-            className="font-serif font-bold lowercase p-3 rounded text-white mr-3"
+            className="font-sans lowercase p-3 rounded text-white mr-3"
           >
             <span>Log In</span>
           </Link>
           <Link
             to="/register"
-            className="font-serif font-bold lowercase bg-white p-3 rounded text-gray-800"
+            className="font-sans lowercase bg-white p-3 rounded text-gray-800"
           >
             <span>Sign Up</span>
           </Link>

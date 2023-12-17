@@ -9,7 +9,7 @@ const Register = () => {
         <div>Please choose your credentials below to sign up for Plants.</div>
         <div>
           Do you already have an account?
-          <Link to="/login" className="ml-2 font-serif font-bold underline">
+          <Link to="/login" className="ml-2 font-sans font-bold underline">
             Click here to login.
           </Link>
         </div>

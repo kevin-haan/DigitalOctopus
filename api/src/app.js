@@ -4,15 +4,29 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const Recaptcha = require("express-recaptcha").RecaptchaV3;
 const app = express();
 require("dotenv").config();
 
 // Middleware
 app.use(cookieParser());
+// Aktiviere CSP mit 'helmet'
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"], // Erlaubt Ressourcen von der gleichen Domain
+      scriptSrc: ["'self'"], // Erlausbt Inline-Skripte von 'self' und Skripte von einer vertrauenswürdigen CDN
+      imgSrc: ["'self'"], // Erlaubt Bilder von 'self' und von einer vertrauenswürdigen Quelle
+      styleSrc: ["'self'"], // Erlaubt Inline-Styles von 'self' und Styles von einer vertrauenswürdigen CDN
+    },
+  })
+);
 app.use(helmet());
 app.use(morgan("combined"));
 
-console.log("Client.origin: ", process.env.CLIENT_ORIGIN);
+const recaptcha = new Recaptcha(process.env.SITE_KEY, process.env.SECRET_KEY);
+app.use(recaptcha.middleware.verify);
+
 const allowedOrigins = [process.env.CLIENT_ORIGIN]; //test
 const corsOptions = {
   origin: function (origin, callback) {
@@ -29,15 +43,9 @@ app.use(express.json());
 
 // Routen
 const router = require("./router");
-const validate = require("../http/middleware/validate");
-// define the home page route
 app.use(router);
 
-// Error-Handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
-});
+const validate = require("../http/middleware/validate");
 router.use(validate);
 
-module.exports = app; // Exportiere die Express-App
+module.exports = app;

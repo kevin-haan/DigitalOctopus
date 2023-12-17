@@ -16,7 +16,7 @@ const Dropdown = () => {
         onClick={toggleDropdown}
         className="text-gray-700 font-semibold rounded inline-flex items-center"
       >
-        <span className="font-serif font-bold bg-white text-gray-800 p-3 rounded">
+        <span className="font-sans font-bold bg-white text-gray-800 p-3 rounded">
           {authData && authData.first_name.charAt(0)}
           {authData && authData.last_name.charAt(0)}
         </span>

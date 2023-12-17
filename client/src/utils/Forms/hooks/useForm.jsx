@@ -24,6 +24,15 @@ export const useForm = (form, action, successAction, errorAction) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!inputs.recaptchaToken) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        recaptchaToken: "Bitte löse das reCAPTCHA",
+      }));
+      return;
+    }
+
     // Sammle neue Fehler basierend auf der aktuellen Eingabe
     const newErrors = Object.keys(inputs).reduce((acc, key) => {
       acc[key] = form.validateField(key, inputs[key], inputs);
@@ -69,5 +78,10 @@ export const useForm = (form, action, successAction, errorAction) => {
     return convertedErrors;
   };
 
-  return { inputs, errors, handleInputChange, handleSubmit };
+  return {
+    inputs,
+    errors,
+    handleInputChange,
+    handleSubmit,
+  };
 };

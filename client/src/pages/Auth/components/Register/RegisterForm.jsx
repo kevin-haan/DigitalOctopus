@@ -59,7 +59,7 @@ const RegisterForm = () => {
             />
           </label>
           {errors.first_name && (
-            <div className="text-red-800 font-serif text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
+            <div className="text-red-800 font-sans text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
               {errors.first_name}
             </div>
           )}
@@ -76,7 +76,7 @@ const RegisterForm = () => {
             />
           </label>
           {errors.last_name && (
-            <div className="text-red-800 font-serif text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
+            <div className="text-red-800 font-sans text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
               {errors.last_name}
             </div>
           )}
@@ -93,7 +93,7 @@ const RegisterForm = () => {
             />
           </label>
           {errors.email && (
-            <div className="text-red-800 font-serif text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
+            <div className="text-red-800 font-sans text-xs p-3 absolute right-5 top-0.5  mt-8 mr-2">
               {errors.email}
             </div>
           )}
@@ -120,7 +120,7 @@ const RegisterForm = () => {
             </div>
           </label>
           {errors.password && (
-            <div className="text-red-800 font-serif text-xs p-3 absolute right-5 top-0.5 mt-8 mr-2">
+            <div className="text-red-800 font-sans text-xs p-3 absolute right-5 top-0.5 mt-8 mr-2">
               {errors.password}
             </div>
           )}
@@ -149,7 +149,7 @@ const RegisterForm = () => {
             </label>
           </label>
           {errors.passwordConfirm && (
-            <div className="text-red-800 font-serif text-xs p-3 absolute right-5 top-0.5 mt-8 mr-2">
+            <div className="text-red-800 font-sans text-xs p-3 absolute right-5 top-0.5 mt-8 mr-2">
               {errors.passwordConfirm}
             </div>
           )}
@@ -157,7 +157,7 @@ const RegisterForm = () => {
       </div>
       <button
         type="submit"
-        className="group mt-5 font-serif font-bold text-gray-800 py-2 px-4 rounded text-center"
+        className="group mt-5 font-sans font-bold text-gray-800 py-2 px-4 rounded text-center"
       >
         <PiSignature className="mx-auto bg-gray-800 p-3 text-white rounded-full w-fit h-fit mb-3 group-hover:scale-110 transition-transform" />
         <span className="group-hover:underline">Sign up</span>

@@ -6,7 +6,8 @@ import { PiEyeClosed } from "react-icons/pi";
 import { PiEye } from "react-icons/pi";
 import { FiKey } from "react-icons/fi";
 import { useState } from "react";
-
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRecaptcha } from "../../../../utils/Recaptcha/hooks/useRecaptcha";
 const LoginForm = () => {
   const loginForm = new Form({
     email: ["", ["required", "minLength:3"]],
@@ -33,32 +34,38 @@ const LoginForm = () => {
   const onFormSubmit = async (inputs) => {
     if (isAuthenticated) {
       toast("Bereits angemeldet.");
-    } else {
-      try {
-        const response = await login(inputs);
-        if (response && response.success) {
-          onSuccess();
-        }
-        if (response && response.errors) {
-          console.log(response.errors);
-          // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
-          Object.keys(response.errors).forEach((key) => {
-            toast.error(response.errors[key].msg);
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        onError(error);
+      return;
+    }
+    // if (!recaptchaValue) {
+    //   toast.error("Bitte bestätigen Sie die ReCaptcha");
+    //   return;
+    // }
+
+    try {
+      const response = await login(inputs);
+      if (response && response.success) {
+        onSuccess();
       }
+      if (response && response.errors) {
+        console.log(response.errors);
+        // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
+        Object.keys(response.errors).forEach((key) => {
+          toast.error(response.errors[key].msg);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      onError(error);
     }
   };
 
-  const { inputs, errors, handleInputChange, handleSubmit } = useForm(
-    loginForm,
-    onFormSubmit,
-    onSuccess,
-    onError
-  );
+  const {
+    inputs,
+    errors,
+    handleInputChange,
+    handleSubmit,
+    handleRecaptchaChange,
+  } = useForm(loginForm, onFormSubmit, onSuccess, onError);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -74,7 +81,7 @@ const LoginForm = () => {
           />
         </label>
         {errors.email && (
-          <div className="text-red-800 font-serif text-xs p-3 absolute right-0 top-0 mt-8 mr-2">
+          <div className="text-red-800 font-sans text-xs p-3 absolute right-0 top-0 mt-8 mr-2">
             {errors.email}
           </div>
         )}
@@ -101,15 +108,19 @@ const LoginForm = () => {
           </div>
         </label>
         {errors.password && (
-          <div className="text-red-800 font-serif text-xs p-3 absolute right-0 top-0 mt-8 mr-2">
+          <div className="text-red-800 font-sans text-xs p-3 absolute right-0 top-0 mt-8 mr-2">
             {errors.password}
           </div>
         )}
       </div>
-
+      {/* <ReCAPTCHA
+        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+        onChange={handleRecaptchaChange}
+      /> */}
+      {errors.recaptchaToken && <div>{errors.recaptchaToken}</div>}
       <button
         type="submit"
-        className="group mt-5 font-serif font-bold text-gray-800 py-2 px-4 rounded text-center"
+        className="group mt-5 font-sans font-bold text-gray-800 py-2 px-4 rounded text-center"
       >
         <FiKey className="mx-auto bg-gray-800 p-3 text-white rounded-full w-fit h-fit mb-3 group-hover:rotate-45 transition-transform" />
         <span className="group-hover:underline">Login</span>
