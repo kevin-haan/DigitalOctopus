@@ -11,7 +11,7 @@ services:
       - certbot
     command: nginx -g 'daemon off;'
     networks:
-      - digitaloctopus_digitaloctopus
+      - ${NETWORK_NAME}
 
   certbot:
     image: certbot/certbot
