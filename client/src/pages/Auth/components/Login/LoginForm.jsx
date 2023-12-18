@@ -7,7 +7,7 @@ import { PiEye } from "react-icons/pi";
 import { FiKey } from "react-icons/fi";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useRecaptcha } from "../../../../utils/Recaptcha/hooks/useRecaptcha";
+import useRecaptcha from "../../../../utils/Recaptcha/hooks/useRecaptcha";
 const LoginForm = () => {
   const loginForm = new Form({
     email: ["", ["required", "minLength:3"]],
@@ -16,7 +16,8 @@ const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
+  const { recaptchaToken, handleRecaptchaChange, resetRecaptcha } =
+    useRecaptcha();
   const { login, isAuthenticated } = useAuth();
 
   const onSuccess = async (response) => {
@@ -25,47 +26,20 @@ const LoginForm = () => {
     });
   };
 
-  const onError = (error) => {
-    error.map((error) => {
-      toast.error(error);
+  const onError = (errors) => {
+    Object.entries(errors).forEach(([key, msg]) => {
+      toast.error(msg);
     });
   };
 
-  const onFormSubmit = async (inputs) => {
-    if (isAuthenticated) {
-      toast("Bereits angemeldet.");
-      return;
-    }
-    // if (!recaptchaValue) {
-    //   toast.error("Bitte bestätigen Sie die ReCaptcha");
-    //   return;
-    // }
+  const onFormSubmit = () => login({ ...inputs, recaptchaToken });
 
-    try {
-      const response = await login(inputs);
-      if (response && response.success) {
-        onSuccess();
-      }
-      if (response && response.errors) {
-        console.log(response.errors);
-        // Gehe jeden Fehler durch und zeige eine Toast-Nachricht an
-        Object.keys(response.errors).forEach((key) => {
-          toast.error(response.errors[key].msg);
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      onError(error);
-    }
-  };
-
-  const {
-    inputs,
-    errors,
-    handleInputChange,
-    handleSubmit,
-    handleRecaptchaChange,
-  } = useForm(loginForm, onFormSubmit, onSuccess, onError);
+  const { inputs, errors, handleInputChange, handleSubmit } = useForm(
+    loginForm,
+    onFormSubmit,
+    onSuccess,
+    onError
+  );
 
   return (
     <form onSubmit={handleSubmit}>
@@ -113,11 +87,11 @@ const LoginForm = () => {
           </div>
         )}
       </div>
-      {/* <ReCAPTCHA
-        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      <ReCAPTCHA
+        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
         onChange={handleRecaptchaChange}
-      /> */}
-      {errors.recaptchaToken && <div>{errors.recaptchaToken}</div>}
+      />
+      {errors.recaptcha && <div>{errors.recaptcha}</div>}
       <button
         type="submit"
         className="group mt-5 font-sans font-bold text-gray-800 py-2 px-4 rounded text-center"

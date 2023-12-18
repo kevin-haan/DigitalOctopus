@@ -6,7 +6,9 @@ import { PiEyeClosed } from "react-icons/pi";
 import { PiEye } from "react-icons/pi";
 import { PiSignature } from "react-icons/pi";
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
+import useRecaptcha from "../../../../utils/Recaptcha/hooks/useRecaptcha";
 const RegisterForm = () => {
   const registerForm = new Form({
     first_name: ["", ["required", "minLength:3"]],
@@ -18,6 +20,8 @@ const RegisterForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const { recaptchaToken, handleRecaptchaChange, resetRecaptcha } =
+    useRecaptcha();
 
   const { register, isAuthenticated } = useAuth();
 
@@ -155,6 +159,12 @@ const RegisterForm = () => {
           )}
         </div>
       </div>
+      <ReCAPTCHA
+        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+        onChange={handleRecaptchaChange}
+      />
+      {errors.recaptcha && <div>{errors.recaptcha}</div>}
+
       <button
         type="submit"
         className="group mt-5 font-sans font-bold text-gray-800 py-2 px-4 rounded text-center"

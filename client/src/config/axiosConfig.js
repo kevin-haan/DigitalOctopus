@@ -10,7 +10,6 @@ axios.interceptors.request.use(
   async (config) => {
     // Überprüft, ob die Methode ein POST-Request ist
     if (config.method === "post") {
-      console.log("post");
       const csrfToken = await CsrfService.fetchCsrfToken();
       config.headers["CSRF-Token"] = csrfToken;
       // Weitere Header-Konfigurationen für POST-Requests hier

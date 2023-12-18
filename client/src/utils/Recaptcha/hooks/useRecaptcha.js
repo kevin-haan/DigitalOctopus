@@ -1,11 +1,21 @@
 import { useState, useCallback } from "react";
 
-export const useRecaptcha = (siteKey) => {
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
+const useRecaptcha = () => {
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
-  const handleRecaptchaChange = useCallback((value) => {
-    setRecaptchaValue(value);
+  const handleRecaptchaChange = useCallback((token) => {
+    setRecaptchaToken(token);
   }, []);
 
-  return { recaptchaValue, handleRecaptchaChange };
+  const resetRecaptcha = useCallback(() => {
+    setRecaptchaToken("");
+  }, []);
+
+  return {
+    recaptchaToken,
+    handleRecaptchaChange,
+    resetRecaptcha,
+  };
 };
+
+export default useRecaptcha;

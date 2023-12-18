@@ -27,6 +27,14 @@ exports.login = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
+  if (req.recaptcha && req.recaptcha.error) {
+    return res.status(401).json({
+      errors: [
+        { path: "recaptcha", msg: "ReCaptcha-Validierung fehlgeschlagen" },
+      ],
+    });
+  }
+
   const { email, password } = req.body;
 
   try {

@@ -4,7 +4,6 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const Recaptcha = require("express-recaptcha").RecaptchaV3;
 const app = express();
 require("dotenv").config();
 
@@ -23,9 +22,6 @@ app.use(
 );
 app.use(helmet());
 app.use(morgan("combined"));
-
-const recaptcha = new Recaptcha(process.env.SITE_KEY, process.env.SECRET_KEY);
-app.use(recaptcha.middleware.verify);
 
 const allowedOrigins = [process.env.CLIENT_ORIGIN]; //test
 const corsOptions = {
