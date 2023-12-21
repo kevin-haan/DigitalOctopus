@@ -1,4 +1,4 @@
-import Start from "../pages/Start";
+import Start from "../pages/Start/Start";
 
 export const indexRoutes = [
   {

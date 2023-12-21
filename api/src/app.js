@@ -23,7 +23,7 @@ app.use(
 app.use(helmet());
 app.use(morgan("combined"));
 
-const allowedOrigins = [process.env.CLIENT_ORIGIN]; //test
+const allowedOrigins = [process.env.CLIENT_ORIGIN, process.env.CLIENT_ORIGIN_ALT]; //test
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {

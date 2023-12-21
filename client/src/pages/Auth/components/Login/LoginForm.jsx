@@ -1,13 +1,10 @@
-import Form from "../../../../utils/Forms/classes/Form";
-import { useForm } from "../../../../utils/Forms/hooks/useForm";
-import { useAuth } from "../../../../context/AuthContext";
+import { FiKey, FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-toastify";
-import { PiEyeClosed } from "react-icons/pi";
-import { PiEye } from "react-icons/pi";
-import { FiKey } from "react-icons/fi";
+import Form from "../../../../utils/Forms/classes/Form";
+import { useAuth } from "../../../../context/AuthContext";
+import { useForm } from "../../../../utils/Forms/hooks/useForm";
 import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import useRecaptcha from "../../../../utils/Recaptcha/hooks/useRecaptcha";
+
 const LoginForm = () => {
   const loginForm = new Form({
     email: ["", ["required", "minLength:3"]],
@@ -15,24 +12,22 @@ const LoginForm = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const { recaptchaToken, handleRecaptchaChange, resetRecaptcha } =
-    useRecaptcha();
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
   const { login, isAuthenticated } = useAuth();
 
-  const onSuccess = async (response) => {
+  const onSuccess = () => {
     toast("You have signed in", {
-      icon: FiKey,
+      icon: <FiKey />,
     });
   };
 
   const onError = (errors) => {
-    Object.entries(errors).forEach(([key, msg]) => {
+    Object.values(errors).forEach((msg) => {
       toast.error(msg);
     });
   };
 
-  const onFormSubmit = () => login({ ...inputs, recaptchaToken });
+  const onFormSubmit = login;
 
   const { inputs, errors, handleInputChange, handleSubmit } = useForm(
     loginForm,
@@ -76,8 +71,7 @@ const LoginForm = () => {
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 "
               onClick={togglePasswordVisibility}
             >
-              {showPassword && <PiEye />}
-              {!showPassword && <PiEyeClosed />}
+              {showPassword ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
         </label>
@@ -87,11 +81,6 @@ const LoginForm = () => {
           </div>
         )}
       </div>
-      <ReCAPTCHA
-        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-        onChange={handleRecaptchaChange}
-      />
-      {errors.recaptcha && <div>{errors.recaptcha}</div>}
       <button
         type="submit"
         className="group mt-5 font-sans font-bold text-gray-800 py-2 px-4 rounded text-center"

@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
           const userData = await UserService.getUserData();
           persistUser(userData);
           setIsAuthenticated(true);
-          return true;
+          return { success: true, data: loginResponse };
         } else {
           setIsAuthenticated(false);
           return { success: false, errors: loginResponse.errors };

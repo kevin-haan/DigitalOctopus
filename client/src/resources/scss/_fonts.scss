@@ -1,12 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Vollkorn:wght@400;500;600;700;800&display=swap");
 
 .font-sans {
-  font-family: Figtree;
+  // font-family: Figtree;
+  font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
+    sans-serif;
 }
 
 .font-serif {
   font-family: Playfair Display;
 }
+
 body {
   @apply font-sans;
   font-weight: 300;

@@ -1,15 +1,18 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    watch: {
-      usePolling: true,
+export default defineConfig(({  }) => {
+  
+  return {
+    plugins: [react()],
+    server: {
+      watch: {
+        usePolling: true,
+      },
+      host: true,
+      strictPort: true,
+      port: process.env.CLIENT_PORT, // Verwende den Port aus den Umgebungsvariablen
     },
-    host: true, // needed for the Docker Container port mapping to work
-    strictPort: true,
-    port: 80, // you can replace this port with any port
-  },
+    // Weitere Konfigurationen...
+  };
 });

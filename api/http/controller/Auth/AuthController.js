@@ -39,8 +39,12 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
+
     if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).json({ message: "Ungültige An2meldedaten" });
+      return res.status(401).json({
+        errors: [{ path: "password", msg: "Email and password do not match" }],
+        errors: [{ path: "email", msg: "Email and password do not match" }],
+      });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {

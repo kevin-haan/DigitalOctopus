@@ -1,8 +1,9 @@
 import { useAuth } from "../context/AuthContext";
 import { useGlobalLoadingStatus } from "../context/GlobalLoadingStatusContext";
 import Dropdown from "./common/Dropdown";
-import logo from "../assets/images/logo/digitaloctopus_logo_white.svg";
+import logo from "../assets/images/logo/digitaloctopus_logo_blue.svg";
 import { Link } from "react-router-dom";
+import Navigation from "./Navigation";
 
 function Header() {
   const { isAuthenticated } = useAuth();
@@ -36,13 +37,17 @@ function Header() {
   };
 
   return (
-    <div className="absolute w-full h-40 flex">
+    <div className="absolute w-full h-20 flex">
       <div className="container mx-auto my-auto justify-between items-center flex">
-        <span className="flex-1"></span>
         <div className="flex-1 flex justify-center my-auto">
-          <img src={logo} className="h-12 w-auto"></img>
+          <Link to="/">
+            <img src={logo} className="h-12 w-auto"></img>
+          </Link>
         </div>
-        <span className="flex-1 flex justify-end my-auto">
+        <div className="flex-1">
+          <Navigation />
+        </div>
+        <span className="flex justify-end my-auto">
           {isGloballyLoading && renderLoadingIndicator()}
           {!isGloballyLoading && renderUserInfo()}
         </span>

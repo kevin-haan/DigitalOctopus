@@ -6,9 +6,6 @@ export const useForm = (form, action, successAction, errorAction) => {
   const [errors, setErrors] = useState({});
   const { startGloballyLoading, stopGloballyLoading } =
     useGlobalLoadingStatus();
-  useEffect(() => {
-    console.log("Aktualisierte Fehler: ", errors);
-  }, [errors]);
 
   const handleInputChange = useCallback(
     (event) => {
@@ -25,33 +22,28 @@ export const useForm = (form, action, successAction, errorAction) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Sammle neue Fehler basierend auf der aktuellen Eingabe
-    const newErrors = Object.keys(inputs).reduce((acc, key) => {
-      acc[key] = form.validateField(key, inputs[key], inputs);
-      return acc;
-    }, {});
+    const newErrors = {};
+    for (const key of Object.keys(inputs)) {
+      newErrors[key] = form.validateField(key, inputs[key], inputs);
+    }
 
-    // Setze die neuen Fehler in den State
     setErrors(newErrors);
 
-    const hasClientSideErrors = Object.values(newErrors).some((error) => error);
+    const hasClientSideErrors = Object.values(newErrors).some(Boolean);
     if (!hasClientSideErrors) {
       startGloballyLoading();
       try {
         const response = await action(inputs);
-        console.log(action);
-        // Prüfen, ob serverseitige Fehler vorhanden sind
+        console.log(response);
+
         if (response && response.success) {
           successAction(response);
         }
+
         if (response && response.errors) {
           const serverErrors = convertServerErrors(response.errors);
-          console.log("resp", response.errors);
-
           setErrors((prevErrors) => ({ ...prevErrors, ...serverErrors }));
-
           errorAction(serverErrors);
-          // Serverseitige Fehler in die State integrieren
         }
       } finally {
         stopGloballyLoading();
@@ -60,14 +52,10 @@ export const useForm = (form, action, successAction, errorAction) => {
   };
 
   const convertServerErrors = (serverErrors) => {
-    const convertedErrors = {};
-
-    serverErrors.forEach((error) => {
-      // Angenommen, 'type' ist der Schlüssel des Feldes, zu dem der Fehler gehört
+    return serverErrors.reduce((convertedErrors, error) => {
       convertedErrors[error.path] = error.msg;
-    });
-
-    return convertedErrors;
+      return convertedErrors;
+    }, {});
   };
 
   return {

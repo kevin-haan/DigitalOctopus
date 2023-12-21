@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 COPY .env .env
-
+RUN chmod +x /usr/src/app/node_modules/.bin/vite
 ARG PORT=80
 ENV PORT $PORT
 EXPOSE $PORT

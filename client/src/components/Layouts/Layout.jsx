@@ -24,7 +24,7 @@ function Layout() {
         progressClassName="custom-toast-progress-bar"
       />
       <Header />
-      <main className=" flex-grow flex">
+      <main className="flex-grow flex">
         <Outlet /> {/* Hier werden die Komponenten der Unterrouten gerendert */}
       </main>
       <Footer />
