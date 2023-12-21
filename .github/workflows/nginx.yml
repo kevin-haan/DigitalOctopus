@@ -2,10 +2,6 @@ name: Deploy NGINX to Droplet
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/nginx.yml"
-      - "nginx/**"
 
 jobs:
   deploy:

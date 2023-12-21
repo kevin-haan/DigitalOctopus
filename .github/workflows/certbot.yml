@@ -2,9 +2,6 @@ name: Activate Let's Encrypt SSL-Certificate
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/certbot.yml"
 
 jobs:
   deploy:

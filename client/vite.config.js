@@ -11,7 +11,7 @@ export default defineConfig(({  }) => {
       },
       host: true,
       strictPort: true,
-      port: 3000, // Verwende den Port aus den Umgebungsvariablen
+      port: process.env.CLIENT_PORT, // Verwende den Port aus den Umgebungsvariablen
     },
     // Weitere Konfigurationen...
   };
