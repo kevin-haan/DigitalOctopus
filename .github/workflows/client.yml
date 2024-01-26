@@ -3,7 +3,7 @@ name: Client Build and Deploy
 on:
   push:
     paths:
-      - "client/**"
+      - "frontend/**"
     branches: [main]
   workflow_dispatch:
 
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Create Client .env file
+      - name: Create Client .env.example file
         run: |
           echo "VITE_API_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }}" > ./client/.env
           echo "CLIENT_PORT=${{ vars.CLIENT_PORT }}" >> ./client/.env

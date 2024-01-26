@@ -40,6 +40,7 @@ jobs:
                        -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
                        -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
                        -e CLIENT_ORIGIN=http://${{ secrets.DROPLET_IP }} \
+                       -e API_BASE_URL=http://${{ secrets.DROPLET_IP }}:${{ vars.API_PORT }} \
                        -e NODE_ENV=${{ secrets.NODE_ENV }} \
                        -e MONGO_URI=${{ secrets.MONGO_URI }} \
                        -e SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }} \

@@ -1,4 +1,4 @@
-const { Database } = require("../../../models/Designer/DesignerBaseModel");
+const Database = require("../../../models/Designer/Database");
 const DesignerDataController = require("./DesignerDataController");
 
 class DatabaseController extends DesignerDataController {

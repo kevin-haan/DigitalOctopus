@@ -68,7 +68,8 @@ exports.logout = async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    expires: new Date(0), // Setze ein vergangenes Datum
+    expires: new Date(0),
+
   });
   res.status(200).json({ ok: true });
 };

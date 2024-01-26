@@ -12,7 +12,7 @@ const checkEmailNotInUse = async (value) => {
 exports.registerValidation = checkSchema({
   email: {
     notEmpty: {
-      errorMessage: "Email is required", // Fehlernachricht, wenn das Feld leer ist
+      errorMessage: "Email is required",
     },
     emailNotInUse: {
       custom: checkEmailNotInUse,
@@ -28,12 +28,12 @@ exports.registerValidation = checkSchema({
   },
   first_name: {
     notEmpty: {
-      errorMessage: "First name is required", // Fehlernachricht, wenn das Feld leer ist
+      errorMessage: "First name is required",
     },
   },
   last_name: {
     notEmpty: {
-      errorMessage: "Last name is required", // Fehlernachricht, wenn das Feld leer ist
+      errorMessage: "Last name is required",
     },
   },
 });

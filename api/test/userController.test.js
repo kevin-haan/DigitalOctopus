@@ -1,6 +1,6 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const server = require("../src/app"); // Pfad zu deiner Express-App
+const server = require("../src/app");
 const expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -21,5 +21,4 @@ describe("UserController", () => {
     });
   });
 
-  // Weitere Tests für andere Routen und Funktionen
 });

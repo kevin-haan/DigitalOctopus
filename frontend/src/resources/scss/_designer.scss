@@ -1,0 +1,147 @@
+// Farbverlaufsvariablen definieren
+
+.bg-designer {
+  background-image: linear-gradient(#ffffff, #e5e5e5);
+}
+
+.bg-gradient {
+  background-image: $gradient-colors; // Verwendet die Farbverlaufsvariable
+}
+
+// Definiert den Farbverlauf und Glow-Effekt
+.progress-glow {
+  background-image: $gradient-colors; // Verwendet die Farbverlaufsvariable
+  position: relative;
+  transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out; // Übergang für Breite und Schatten
+}
+
+.progress-glow::before {
+  content: "";
+  position: absolute;
+  inset: 1px; // Kontrolliert die Ausbreitung
+  // transform: translate(10px, 8px); // Kontrolliert die Verschiebung
+  z-index: -1; // platziert das Element hinter dem Balken
+  background: $gradient-colors; // Verwendet die Farbverlaufsvariable
+  filter: blur(10px); // Kontrolliert die Unschärfe
+}
+
+// Aktiviert den Glow-Effekt, wenn die Progress Bar eine Breite hat
+.progress-bar.glow-active::after {
+  opacity: 1; // Macht den Glow-Effekt sichtbar
+}
+
+.line-container {
+  position: relative;
+  width: 100%; // Stelle sicher, dass der Container die volle Breite einnimmt
+  height: 100%; // Stelle sicher, dass der Container die volle Höhe einnimmt
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .line {
+    position: relative;
+    height: 10%; // Länge der Linie
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      width: 0.5em; // Dicke der Linie
+      height: 50%; // Länge jeder Hälfte des Chevrons
+      background: gray;
+      left: 0;
+      transition: transform 0.3s cubic-bezier(0.48, 0.14, 0.45, 0.83);
+    }
+
+    &:before {
+      top: 0;
+      transform-origin: center top;
+    }
+
+    &:after {
+      bottom: 0;
+      transform-origin: center bottom;
+    }
+  }
+
+  &:hover {
+    .line {
+      background-color: transparent; // Die Hauptlinie sofort unsichtbar machen
+
+      &:before {
+        transform: rotate(25deg) scaleY(1.15); // Obere Linie des Chevrons
+      }
+
+      &:after {
+        transform: rotate(-25deg) scaleY(1.15); // Untere Linie des Chevrons
+      }
+    }
+  }
+  &.right-chevron:hover .line {
+    &:before {
+      transform: rotate(-25deg) scaleY(1.15); // Obere Linie des linken Chevrons
+    }
+    &:after {
+      transform: rotate(25deg) scaleY(1.15); // Untere Linie des linken Chevrons
+    }
+  }
+
+  &.left-chevron:hover .line {
+    &:before {
+      transform: rotate(25deg) scaleY(1.15); // Obere Linie des rechten Chevrons
+    }
+    &:after {
+      transform: rotate(-25deg) scaleY(1.15); // Untere Linie des rechten Chevrons
+    }
+  }
+}
+
+.selection-dropzone:before {
+  z-index: inherit;
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 4em;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: all ease-in-out 1s;
+  box-shadow: 0 0 10px 40px rgba(65, 184, 131, 255);
+  pointer-events: none; /* Verhindert Interaktion mit dem After-Element */
+}
+
+// .selection-dropzone:after {
+//   z-index: inherit;
+//   display: block;
+//   position: absolute;
+//   top: -10;
+//   left: 0;
+//   border-radius: 0;
+//   background: $gradient-colors;
+//   width: 200%;
+//   height: 100%;
+//   opacity: 0;
+//   transition: all ease-in-out 1s;
+//   box-shadow: 0 0 10px 40px rgba(65, 184, 131, 255);
+//   pointer-events: none; /* Verhindert Interaktion mit dem After-Element */
+// }
+
+.animation:before {
+  animation: expandGlow 1s cubic-bezier(0.075, 0.82, 0.165, 1); // Verwende die Keyframes-Animation}
+}
+
+.glow {
+  border: $gradient-colors 4px solid;
+  // box-shadow: 0 0 40px 40px #d46c76; // Endet mit sichtbarem Schatten
+}
+
+.fade-left {
+  animation: fadeOutLeft 0.3s ease-in-out forwards; // Dauer der Animation anpassen
+}
+
+.fade-right {
+  animation: fadeOutRight 0.3s ease-in-out forwards;
+}

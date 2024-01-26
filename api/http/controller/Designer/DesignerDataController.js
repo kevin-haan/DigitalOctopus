@@ -9,7 +9,6 @@ class DesignerDataController {
 
   index = async (req, res) => {
     try {
-
       const availableItems = await this.model.find();
 
       if (!availableItems || availableItems.length === 0) {
@@ -18,10 +17,14 @@ class DesignerDataController {
           .json({ message: `${this.model.modelName} nicht gefunden` });
       }
 
+      availableItems.map((item) => {
+        item.name === "Laravel"
+          ? (item.options = { jetstream: false, breeze: false })
+          : "";
+      });
+
       const response = {
-        items: availableItems.map((item) =>
-          createDesignerDataResponse(item)
-        ),
+        items: availableItems.map((item) => createDesignerDataResponse(item)),
       };
 
       res.json(response);

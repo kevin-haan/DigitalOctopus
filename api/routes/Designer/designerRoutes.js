@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const apiController = require("../../http/controller/Designer/ApiController");
-const clientController = require("../../http/controller/Designer/ClientController");
-const cssFrameworkController = require("../../http/controller/Designer/CssFrameworkController");
-const databaseController = require("../../http/controller/Designer/DatabaseController");
-const databaseDatacontroller = require("../../http/controller/Designer/DesignerDataController");
+const BackendController = require("../../http/controller/Designer/BackendController");
+const FrontendController = require("../../http/controller/Designer/FrontendController");
+const CSSFrameworkController = require("../../http/controller/Designer/CSSFrameworkController");
+const DatabaseController = require("../../http/controller/Designer/DatabaseController");
+const CICDPipelineController = require("../../http/controller/Designer/CICDPipelineController");
+const DesignerController = require("../../http/controller/Designer/DesignerController");
 
 // router.get('/', userController.index);
-router.get("/api", apiController.index);
-router.get("/client", clientController.index);
-router.get("/cssFramework", cssFrameworkController.index);
-router.get("/database", databaseController.index);
+router.post("/", DesignerController.handleSelection);
+router.get("/backend", BackendController.index);
+router.get("/frontend", FrontendController.index);
+router.get("/cssFramework", CSSFrameworkController.index);
+router.get("/database", DatabaseController.index);
+router.get("/cicdPipeline", CICDPipelineController.index);
 module.exports = router;

@@ -1,6 +1,6 @@
-client/.env
+frontend/.env
 api/.env
-.env
-client/.env
-client/package-lock.json
+.env.example
+frontend/.env
+frontend/package-lock.json
 node_modules
